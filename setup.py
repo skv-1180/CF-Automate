@@ -1,8 +1,8 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="cf-helper",  
-    version="0.2.0",  
+    name="cf_helper",  
+    version="0.2.1",  
     description="A Python library for interacting with Codeforces API and automating tasks.",
     long_description=open("README.md").read(),  
     long_description_content_type="text/markdown",
