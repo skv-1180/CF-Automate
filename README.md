@@ -4,11 +4,10 @@ A Python library for interacting with the Codeforces API, allowing you to fetch 
 
 ## Table of Contents
 - [Installation](#installation)
-- [Usage](#usage)
 - [API Key Setup](#api-key-setup)
+- [Usage](#usage)
 - [Functions](#functions)
 - [Limitations](#limitations)
-- [Contributing](#contributing)
 - [License](#license)
 
 ## Installation
