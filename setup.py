@@ -13,6 +13,7 @@ setup(
     install_requires=[
         "requests", 
         "beautifulsoup4"
+        "python-dotenv==0.20.0"
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
