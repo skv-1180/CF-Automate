@@ -1,0 +1,18 @@
+# Ignore Python bytecode files
+__pycache__/
+*.pyc
+*.pyo
+
+# Ignore virtual environment
+venv/
+
+# Ignore sensitive information
+.env
+api_keys.json
+
+# Ignore build artifacts
+dist/
+build/
+*.egg-info/
+
+
