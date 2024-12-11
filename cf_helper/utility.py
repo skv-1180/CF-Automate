@@ -3,18 +3,16 @@ import time
 import hashlib
 import random
 import string
-from bs4 import BeautifulSoup
-
 
 def get_user_info(handle):
     url = f"https://codeforces.com/api/user.info?handles={handle}"
     response = requests.get(url)
     if response.status_code == 200:
         data = response.json()
-        if data['status'] == 'OK':
+        if data['status'] == 'OK' and data['result']:
             return data['result'][0]
         else:
-            print(f"Error: {data['comment']}")
+            print(f"Error: {data.get('comment', 'Unknown error')}")
     else:
         print(f"HTTP Error: {response.status_code}")
 
@@ -26,7 +24,7 @@ def get_user_rating(handle):
         if data['status'] == 'OK':
             return data['result']
         else:
-            print(f"Error: {data['comment']}")
+            print(f"Error: {data.get('comment', 'Unknown error')}")
     else:
         print(f"HTTP Error: {response.status_code}")
 
@@ -38,7 +36,7 @@ def get_user_status(handle, from_index=1, count=10):
         if data['status'] == 'OK':
             return data['result']
         else:
-            print(f"Error: {data['comment']}")
+            print(f"Error: {data.get('comment', 'Unknown error')}")
     else:
         print(f"HTTP Error: {response.status_code}")
 
@@ -66,18 +64,16 @@ def get_user_friends(handle, key, secret, only_online=False):
         if data['status'] == 'OK':
             return data['result']
         else:
-            print(f"Error: {data['comment']}")
+            print(f"Error: {data.get('comment', 'Unknown error')}")
     else:
         print(f"HTTP Error: {response.status_code}")
 
-def get_problemset_problems(tags=None, problemset_name=None, rating=None):
+def get_problemset_problems(tags=None, rating=None):
     method = "problemset.problems"
     url = f"https://codeforces.com/api/{method}"
     params = {}
     if tags:
         params["tags"] = tags
-    if problemset_name:
-        params["problemsetName"] = problemset_name
     response = requests.get(url, params=params)
     if response.status_code == 200:
         data = response.json()
@@ -88,7 +84,7 @@ def get_problemset_problems(tags=None, problemset_name=None, rating=None):
                 problems = [problem for problem in problems if problem.get('rating') == rating]
             return problems, problem_statistics
         else:
-            print(f"Error: {data['comment']}")
+            print(f"Error: {data.get('comment', 'Unknown error')}")
     else:
         print(f"HTTP Error: {response.status_code}")
 
@@ -104,9 +100,13 @@ def get_contest_rating_changes(contest_id):
         if data['status'] == 'OK':
             return data['result']
         else:
-            print(f"Error: {data['comment']}")
+            print(f"Error: {data.get('comment', 'Unknown error')}")
     else:
         print(f"HTTP Error: {response.status_code}")
+
+def get_user_rating_change(contest_id, handle):
+    rating_changes = get_contest_rating_changes(contest_id)
+    return list(filter(lambda change: change['handle'] == handle, rating_changes))
 
 def get_accepted_submission(handle, contestId, index):
     submissions = get_user_status(handle)
@@ -117,5 +117,32 @@ def get_accepted_submission(handle, contestId, index):
                 return f"https://codeforces.com/contest/{contestId}/submission/{sub_id}"
     else:
         print("No submissions found or error occurred.")
+
+def get_contest_standings(contestId, from_index=1, count=5, showUnofficial=False):
+    url = f"https://codeforces.com/api/contest.standings?contestId={contestId}&from={from_index}&count={count}&showUnofficial={str(showUnofficial).lower()}"
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()
+        if data['status'] == 'OK':
+            return data['result']
+        else:
+            print(f"Error: {data.get('comment', 'Unknown error')}")
+    else:
+        print(f"HTTP Error: {response.status_code}")
+
+def get_user_standing(contestId, handles, showUnofficial=False):
+    url = f"https://codeforces.com/api/contest.standings?contestId={contestId}&showUnofficial={str(showUnofficial).lower()}"
+    if isinstance(handles, str):
+        handles = [handles]
+    url += f"&handles={';'.join(handles)}"
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()
+        if data['status'] == 'OK':
+            return data['result']
+        else:
+            print(f"Error: {data.get('comment', 'Unknown error')}")
+    else:
+        print(f"HTTP Error: {response.status_code}")
 
 

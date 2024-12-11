@@ -1,10 +1,28 @@
-"""
-cf-helper: A Python library for interacting with Codeforces API.
-This package includes functions for fetching user information, user ratings,
-contest ratings, and other relevant data from Codeforces.
+# Import and expose functions from utility.py
+from .utility import (
+    get_user_info,
+    get_user_rating,
+    get_user_status,
+    generate_api_sig,
+    get_user_friends,
+    get_problemset_problems,
+    get_contest_rating_changes,
+    get_user_rating_change,
+    get_accepted_submission,
+    get_contest_standings,
+    get_user_standing
+)
 
-Usage:
-  from cf_helper import get_user_info, get_user_rating, get_user_status, generate_api_sig, get_user_friends, get_problemset_problems, get_contest_rating_changes, get_accepted_submission
-"""
-
-from .utility import get_user_info, get_user_rating, get_user_status, generate_api_sig, get_user_friends, get_problemset_problems, get_contest_rating_changes, get_accepted_submission
+# Import and expose functions from display.py
+from .display import (
+    print_user_info,
+    print_user_status,
+    print_user_friends,
+    print_problems,
+    print_problem_statistics,
+    print_rating_changes,
+    print_user_rating_change,
+    print_submission_link,
+    print_contest_standings,
+    print_user_standing
+)
