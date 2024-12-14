@@ -10,7 +10,10 @@ from .utility import (
     get_user_rating_change,
     get_accepted_submission,
     get_contest_standings,
-    get_user_standing
+    get_user_standing,
+    get_contest_list,
+    get_unattempted_problems,
+    get_virtual_contests
 )
 
 # Import and expose functions from display.py
@@ -24,5 +27,8 @@ from .display import (
     print_user_rating_change,
     print_submission_link,
     print_contest_standings,
-    print_user_standing
+    print_user_standing,
+    print_upcoming_contest,
+    print_virtual_contests,
+    print_unattempted_problems
 )

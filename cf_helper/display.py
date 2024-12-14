@@ -20,7 +20,6 @@ def print_user_status(handle, noOfEntries=5):
 
 def print_user_friends(handle, key, secret,noOfFriends = 5, only_online=False):
     user_friends = get_user_friends(handle, key, secret,only_online)
-    noOfFriends = min(noOfFriends, len(user_friends))
     print("\nUser Friends")
     for friend in user_friends[:noOfFriends]:
         print(friend)
@@ -83,7 +82,6 @@ def print_user_standing(contestId, handles, showUnofficial=False):
         print("\nContest Standings: No data available")
         return
     contest = standings['contest']
-    problems = standings['problems']
     rows = standings['rows']
     
     print(f"\nContest: {contest['name']}")
@@ -91,3 +89,34 @@ def print_user_standing(contestId, handles, showUnofficial=False):
     print("Standings:")
     for row in rows:
         print(f"  Rank: {row['rank']}, Handle: {row['party']['members'][0]['handle']}, ParticipantType: {row['party']['participantType']}")
+
+def print_upcoming_contest():
+    contests = get_contest_list(gym=False)
+    print("\nUpcoming Contest List:")
+    upcoming_contests = [contest for contest in contests if contest['phase'] == 'BEFORE']
+    for contest in upcoming_contests:
+        duration_hours = contest['durationSeconds'] // 3600
+        duration_minutes = (contest['durationSeconds'] % 3600) // 60
+        start_time = time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(contest['startTimeSeconds']))
+        print(f"Contest ID: {contest['id']}, Name: {contest['name']}, Duration: {duration_hours}h {duration_minutes}m, Start Time: {start_time}")
+
+def print_virtual_contests(handle, contest_type, noOfContest=5, chooseRandom=False):
+    virtual_contests = get_virtual_contests(handle, contest_type, noOfContest, chooseRandom)
+    if virtual_contests:
+        print("\nVirtual Contests:")
+        for contest in virtual_contests:
+            print(f"Name: {contest['name']}")
+            print(f"Link: {contest['link']}")
+            print(f"Duration: {contest['duration']}")
+            print()
+    else:
+        print("No suitable virtual contests found.")
+
+def print_unattempted_problems(handle, tags=None, rating=None, noOfEntries=5, chooseRandom=False):
+    unattempted_problems = get_unattempted_problems(handle, tags, rating, chooseRandom)
+    print("\nUnattempted Problems:")
+    for problem in unattempted_problems[:noOfEntries]:
+        problem_link = f"https://codeforces.com/contest/{problem['contestId']}/problem/{problem['index']}"
+        print(f"Name: {problem['name']}, Contest ID: {problem['contestId']}, Index: {problem['index']}, Rating: {problem.get('rating', 'N/A')}, Link: {problem_link}")
+
+

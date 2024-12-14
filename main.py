@@ -17,5 +17,8 @@ if __name__ == "__main__":
     print_submission_link(handle, contestId=2040, index='G')
     print_contest_standings(contestId=2040, from_index=1, count=5, showUnofficial=True)
     print_user_standing(contestId=2006, handles="tourist;jiangly", showUnofficial=True)
-    
+    print_upcoming_contest()
+    print_virtual_contests(handle, "Div. 3", noOfContest=10, chooseRandom=True)
+    print_unattempted_problems(handle,tags="dp", rating=1900, noOfEntries=5,chooseRandom=True)
+
 

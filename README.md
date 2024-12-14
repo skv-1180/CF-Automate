@@ -112,9 +112,25 @@ print_contest_standings(contestId=2040, from_index=1, count=5, showUnofficial=Tr
 print_user_standing(contestId=2006, handles="tourist;jiangly", showUnofficial=True)
 ```
 
+#### Fetch Upcoming Contests
+```python
+print_upcoming_contest()
+```
+
+#### Fetch Virtual Contests
+```python
+print_virtual_contests(handle="CodeLegendX", contest_type="div2", noOfContest=3, chooseRandom=True)
+```
+
+#### Fetch Unattempted Problems
+```python
+print_unattempted_problems(handle="CodeLegendX", tags="dp", rating=1600, noOfEntries=3, chooseRandom=True)
+```
+
 ---
 
 ## Functions
+
 - `print_user_info(handle)`: Display user information in a readable format.
 - `print_user_status(handle, noOfEntries)`: Display user submission status.
 - `print_user_friends(handle, key, secret, noOfFriends, only_online)`: Display user friends.
@@ -124,6 +140,9 @@ print_user_standing(contestId=2006, handles="tourist;jiangly", showUnofficial=Tr
 - `print_submission_link(handle, contestId, index)`: Display accepted submission link.
 - `print_contest_standings(contestId, from_index, count, showUnofficial)`: Display contest standings.
 - `print_user_standing(contestId, handles, showUnofficial)`: Display standings for specific handles in a contest.
+- `print_upcoming_contest()`: Display a list of upcoming contests.
+- `print_virtual_contests(handle, contest_type, noOfContest, chooseRandom)`: Display virtual contests suitable for the user.
+- `print_unattempted_problems(handle, tags, rating, noOfEntries, chooseRandom)`: Display unattempted problems with custom filter.
 
 ---
 

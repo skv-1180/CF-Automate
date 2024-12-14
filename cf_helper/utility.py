@@ -145,4 +145,73 @@ def get_user_standing(contestId, handles, showUnofficial=False):
     else:
         print(f"HTTP Error: {response.status_code}")
 
+def get_contest_list(gym=False):
+    method = "contest.list"
+    url = f"https://codeforces.com/api/{method}"
+    params = {
+        "gym": str(gym).lower()
+    }
+    response = requests.get(url, params=params)
+    if response.status_code == 200:
+        data = response.json()
+        if data['status'] == 'OK':
+            return data['result']
+        else:
+            print(f"Error: {data.get('comment', 'Unknown error')}")
+    else:
+        print(f"HTTP Error: {response.status_code}")
+
+def get_virtual_contests(handle, contest_type, noOfEntries=5, chooseRandom=False):
+    valid_types = ["Div. 1", "Div. 2", "Div. 3", "Div. 4", "Div. 1 + Div. 2", "Educational"]
+    if contest_type not in valid_types:
+        print("Invalid contest type. Valid types are: Div. 1, Div. 2, Div. 3, Div. 4, Div. 1 + Div. 2, Educational")
+        return []
+    
+    contests = get_contest_list(gym=False)
+    user_status = get_user_status(handle, from_index=1, count=10000)
+    attempted_contests = {status['contestId'] for status in user_status}
+    
+    virtual_contests = []
+    for contest in contests:
+        if contest['phase'] == 'FINISHED' and contest['id'] not in attempted_contests:
+            if contest_type == "Div. 1 + Div. 2" and "Div. 1 + Div. 2" in contest['name']:
+                duration_hours = contest['durationSeconds'] // 3600
+                duration_minutes = (contest['durationSeconds'] % 3600) // 60
+                contest_link = f"https://codeforces.com/contest/{contest['id']}"
+                virtual_contests.append({
+                    "link": contest_link,
+                    "duration": f"{duration_hours}h {duration_minutes}m",
+                    "name": contest['name']
+                })
+            elif contest_type in contest['name'] and "Div. 1 + Div. 2" not in contest['name']:
+                duration_hours = contest['durationSeconds'] // 3600
+                duration_minutes = (contest['durationSeconds'] % 3600) // 60
+                contest_link = f"https://codeforces.com/contest/{contest['id']}"
+                virtual_contests.append({
+                    "link": contest_link,
+                    "duration": f"{duration_hours}h {duration_minutes}m",
+                    "name": contest['name']
+                })
+    
+    if chooseRandom:
+        random.shuffle(virtual_contests)
+    
+    return virtual_contests[:noOfEntries]
+
+def get_unattempted_problems(handle, tags=None, rating=None, chooseRandom=False):
+    problems, _ = get_problemset_problems(tags, rating)
+    submissions = get_user_status(handle, from_index=1, count=10000)
+    attempted_problems = {(submission['problem']['contestId'], submission['problem']['index']) for submission in submissions}
+    
+    unattempted_problems = []
+    for problem in problems:
+        if (problem['contestId'], problem['index']) not in attempted_problems:
+            unattempted_problems.append(problem)
+    
+    if chooseRandom:
+        random.shuffle(unattempted_problems)
+    
+    return unattempted_problems
+
+
 
