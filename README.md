@@ -119,7 +119,7 @@ print_upcoming_contest()
 
 #### Fetch Virtual Contests
 ```python
-print_virtual_contests(handle="CodeLegendX", contest_type="div2", noOfContest=3, chooseRandom=True)
+print_virtual_contests(handle="CodeLegendX", contest_type="Div. 2", noOfContest=3, chooseRandom=True)
 ```
 
 #### Fetch Unattempted Problems
